@@ -5,7 +5,6 @@ import os
 import pyperclip
 from colorama import Fore, init
 from colorama.ansi import Back, Style
-from getch import pause
 init(autoreset=True)
 chapters = {
     1: "Al-Fatihah (the Opening)",
@@ -244,8 +243,15 @@ def clear():
         os.system('cls')
     else:
         os.system('clear')
+        
 
-
+def pause():
+    if sys.platform == 'linux':
+        from getch import pause as ps
+        ps()
+    else:
+        os.system('pause')
+        
 loop = True
 count = 0
 while loop:
