@@ -1,3 +1,4 @@
+#! /usr/bin/python
 # Source = https://en:wikipedia:org/wiki/List_of_chapters_in_the_Quran
 import random
 import sys
@@ -243,7 +244,7 @@ def clear():
         os.system('cls')
     else:
         os.system('clear')
-        
+
 
 def pause():
     if sys.platform == 'linux':
@@ -251,7 +252,8 @@ def pause():
         ps()
     else:
         os.system('pause')
-        
+
+
 loop = True
 count = 0
 while loop:
@@ -263,9 +265,9 @@ while loop:
     Verse Number. {Fore.LIGHTCYAN_EX}{Style.BRIGHT}{verse}{Style.BRIGHT}{Fore.RESET}""")
     pyperclip.copy(f'https://quran.com/{chapter}/{verse}')
     choice = input('Do you want more[y,n]>').lower()
-    if choice in ['y', 'yes', 'yeah', 'ok'] or choice.find(['y', 'o', 'a']) != -1:
+    if choice in ['y', 'yes', 'yeah', 'ok']:
         loop == True
-    elif choice in ['n', 'exit', 'no', 'nope'] or choice.find(['n', 'e', 'q']) != -1:
+    elif choice in ['n', 'exit', 'no', 'nope']:
         sys.exit()
     else:
         clear()
@@ -274,9 +276,9 @@ while loop:
         while True:
             clear()
             choice = input('Do you want more[y,n]>').lower()
-            if choice in ['y', 'ok'] or choice.find('y') != -1:
+            if choice in ['y', 'ok']:
                 break
-            elif choice in ['n', 'exit', 'no', 'nope', 'quite', 'bye', '0'] or choice.find('n') != -1:
+            elif choice in ['n', 'exit', 'no', 'nope', 'quite', 'bye', '0', 'e']:
                 sys.exit()
             else:
                 continue
