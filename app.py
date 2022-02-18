@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import random
+import re
 
 
 class Quran:
@@ -235,52 +236,72 @@ class Quran:
         113: 5,
         114: 6}
 
-    def __init__(self, chapter_no: int = None, verse_no=None):
-        if 1 <= chapter_no <= 114:
-            self.chapter_no = chapter_no
+    def __init__(self, chapter_no=None, verse_no=None):
+        self.chapter_no = chapter_no
+        self.verse_no = verse_no
+
+    def check_num(self):
+        str_ptrn = re.compile(r"""[a-zA-Z_`~!@#$%^&*;:'"?/\.,+=/*]""")
+        match_ptrn = str_ptrn.search(str(self.chapter_no))
+        if match_ptrn:
+            return 'invalid chapter no'
         else:
-            return 'Invalid chapter no'
-        if 1 <= verse_no <= self.verses[chapter_no]:
-            self.verse_no = verse_no
-        else:
-            return 'Invalid verse no'
+            v_ptrn = str_ptrn.search(str(self.verse_no))
+            if v_ptrn:
+                return 'invalid verse no'
+            else:
+                if 1 <= int(self.chapter_no) <= 114:
+                    return None
+                else:
+                    return 'Invalid chapter no'
 
     def get_verse(self, op=False):
-        html_text = requests.get(
-            f'https://quran.com/{self.chapter_no}/{self.verse_no}').text
-        site = BeautifulSoup(html_text, 'lxml')
-        verse_div = site.find_all(
-            'div', class_='verse__translations english')[1]
-        verse_par = verse_div.find(
-            'p', class_='text text--grey text--medium text--regular translation').text
-# final Output
-        verse = verse_par.strip()
-        message = f"""Chapter Name: {self.chapters[self.chapter_no]}
-Chapter No. {self.chapter_no}
-Verse Number. {self.verse_no}
+        if self.check_num() == None:
+            int(self.chapter_no)
+            int(self.verse_no)
+            html_text = requests.get(
+                f'https://quran.com/{self.chapter_no}/{self.verse_no}').text
+            site = BeautifulSoup(html_text, 'lxml')
+            verse_div = site.find_all(
+                'div', class_='verse__translations english')[1]
+            verse_par = verse_div.find(
+                'p', class_='text text--grey text--medium text--regular translation').text
+    # final Output
+            verse = verse_par.strip()
+            message = f"""Chapter Name: {self.chapters[int(self.chapter_no)]}
+    Chapter No. {self.chapter_no}
+    Verse Number. {self.verse_no}
 
-***{verse}***"""
-        if op == False:
-            return message
-        if op == True:
-            return verse
+    ***{verse}***"""
+            if op == False:
+                return message
+            if op == True:
+                return verse
+        else:
+            return self.check_num()
 
     def get_verse_all(self):
-        if type(self.verse_no) == str and self.verse_no.find('-') != -1:
-            min, max = self.verse_no.split('-')
-            verse = ''
-            for x in range(int(min), int(max)+1):
-                self.verse_no = x
-                verse += self.get_verse(op=True)
-            message = f"""Chapter Name: {self.chapters[self.chapter_no]}
+        if self.check_num() == None:
+            if type(self.verse_no) == str and self.verse_no.find('-') != -1:
+                min, max = self.verse_no.split('-')
+                if 1 <= int(min) <= self.verses[int(self.chapter_no)] and 1 <= int(max) <= self.verses[int(self.chapter_no)] and int(min) < int(max):
+                    verse = ''
+                    for x in range(int(min), int(max)+1):
+                        self.verse_no = x
+                        verse += self.get_verse(op=True)
+                    message = f"""Chapter Name: {self.chapters[int(self.chapter_no)]}
 Chapter No. {self.chapter_no}
 Verse Number. {min}-{max}
 
 ***{verse}***"""
-            return message
+                    return message
+                else:
+                    return 'Invalid verse no'
+            else:
+                abs(int(self.verse_no))
+                return self.get_verse()
         else:
-            abs(int(self.verse_no))
-            return self.get_verse()
+            return self.check_num()
 
     def random_verse(self):
         chapter_no = random.randrange(1, 115)
@@ -288,3 +309,6 @@ Verse Number. {min}-{max}
         self.chapter_no = chapter_no
         self.verse_no = verse_no
         return self.get_verse()
+
+
+print(Quran('116', '6-7').get_verse_all())
