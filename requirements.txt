@@ -1,7 +1,8 @@
-colorama
-pyperclip
-# Execute command: "python -m pip install -r requirements.txt"
-#
-#
-#
-# On Linux, this module makes use of the xclip or xsel commands, which should come with the os. Otherwise run "sudo apt-get install xclip" or "sudo apt-get install xsel" (Note: xsel does not always seem to work.)
+beautifulsoup4==4.10.0
+certifi==2021.10.8
+charset-normalizer==2.0.12
+idna==3.3
+lxml==4.8.0
+requests==2.27.1
+soupsieve==2.3.1
+urllib3==1.26.8
