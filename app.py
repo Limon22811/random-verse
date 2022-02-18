@@ -309,6 +309,3 @@ Verse Number. {min}-{max}
         self.chapter_no = chapter_no
         self.verse_no = verse_no
         return self.get_verse()
-
-
-print(Quran('116', '6-7').get_verse_all())
