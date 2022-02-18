@@ -235,8 +235,11 @@ class Quran:
         113: 5,
         114: 6}
 
-    def __init__(self, chapter_no=None, verse_no=None):
-        self.chapter_no = chapter_no
+    def __init__(self, chapter_no: int = None, verse_no=None):
+        if 1 <= self.chapter_no <= 114:
+            self.chapter_no = chapter_no
+        else:
+            return 'Invalid'
         self.verse_no = verse_no
 
     def get_verse(self, op=False):
@@ -260,17 +263,21 @@ Verse Number. {self.verse_no}
             return verse
 
     def get_verse_all(self):
-        min, max = self.verse_no.split('-')
-        verse = ''
-        for x in range(int(min), int(max)+1):
-            self.verse_no = x
-            verse += self.get_verse(op=True)
-        message = f"""Chapter Name: {self.chapters[self.chapter_no]}
+        if type(self.verse_no) == str and self.verse_no.find('-') != -1:
+            min, max = self.verse_no.split('-')
+            verse = ''
+            for x in range(int(min), int(max)+1):
+                self.verse_no = x
+                verse += self.get_verse(op=True)
+            message = f"""Chapter Name: {self.chapters[self.chapter_no]}
 Chapter No. {self.chapter_no}
 Verse Number. {min}-{max}
 
 ***{verse}***"""
-        return message
+            return message
+        else:
+            abs(int(self.verse_no))
+            return self.get_verse()
 
     def random_verse(self):
         chapter_no = random.randrange(1, 115)
