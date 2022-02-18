@@ -236,11 +236,14 @@ class Quran:
         114: 6}
 
     def __init__(self, chapter_no: int = None, verse_no=None):
-        if 1 <= self.chapter_no <= 114:
+        if 1 <= chapter_no <= 114:
             self.chapter_no = chapter_no
         else:
-            return 'Invalid'
-        self.verse_no = verse_no
+            return 'Invalid chapter no'
+        if 1 <= verse_no <= self.verses[chapter_no]:
+            self.verse_no = verse_no
+        else:
+            return 'Invalid verse no'
 
     def get_verse(self, op=False):
         html_text = requests.get(
