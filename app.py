@@ -294,6 +294,3 @@ Verse Number. {self.verse_no}
         chapter_no = random.randrange(1, 115)
         verse_no = random.randrange(1, Quran.verses[chapter_no]+1)
         return Quran(chapter_no, verse_no).get_verse()
-
-
-print(Quran('2', "1-10").get_verse())
