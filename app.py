@@ -296,4 +296,4 @@ Verse Number. {self.verse_no}
         return Quran(chapter_no, verse_no).get_verse()
 
 
-print(Quran().parse_verse(1, 1))
+print(Quran('2', "1-10").get_verse())
