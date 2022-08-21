@@ -245,10 +245,8 @@ class Quran:
         html_text = requests.get(
             f'https://quran.com/{chapter}/{verse}').text
         site = BeautifulSoup(html_text, 'lxml')
-        verse_div = site.find_all(
-            'div', class_='verse__translations english')[1]
-        verse_par = verse_div.find(
-            'p', class_='text text--grey text--medium text--regular translation').text
+        verse_par = site.find(
+            'div', class_='TranslationText_text__4atf8 TranslationText_ltr__146rZ').text
         return verse_par.strip()
 
     def check_num(self):
@@ -296,3 +294,6 @@ Verse Number. {self.verse_no}
         chapter_no = random.randrange(1, 115)
         verse_no = random.randrange(1, Quran.verses[chapter_no]+1)
         return Quran(chapter_no, verse_no).get_verse()
+
+
+print(Quran().parse_verse(1, 1))
