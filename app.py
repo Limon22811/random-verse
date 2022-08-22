@@ -1,3 +1,4 @@
+from base64 import encode
 import time
 from bs4 import BeautifulSoup
 import requests
@@ -246,8 +247,8 @@ class Quran:
             f'https://quran.com/{chapter}/{verse}').text
         site = BeautifulSoup(html_text, 'lxml')
         verse_par = site.find(
-            'div', class_='TranslationText_text__4atf8 TranslationText_ltr__146rZ').text
-        return verse_par.strip()
+            'div', class_='TranslationText_text__4atf8 TranslationText_ltr__146rZ').text.encode('ascii', 'ignore')
+        return verse_par.strip().decode()
 
     def check_num(self):
         str_ptrn = re.compile(r"""[a-zA-Z_`~!@#$%^&*;:'"?/\.,+=/*]""")
@@ -294,3 +295,6 @@ Verse Number. {self.verse_no}
         chapter_no = random.randrange(1, 115)
         verse_no = random.randrange(1, Quran.verses[chapter_no]+1)
         return Quran(chapter_no, verse_no).get_verse()
+
+
+print(Quran(2, 10).get_verse())
